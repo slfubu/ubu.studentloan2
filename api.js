@@ -1,4 +1,4 @@
-const API_URL = "";
+const API_URL = "https://script.google.com/a/macros/ubu.ac.th/s/AKfycbxe_0lkOk80Bp08ld3fEo_2jmywS-YFiSYNcpYjN6yZXZv75ogukq7emUrirRgQnjx7/exec";
 
 async function callApi(action, payload) {
     const loader = document.getElementById('customLoader');
