@@ -1,0 +1,1009 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://script.google.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://script.google.com https://script.googleusercontent.com https://api.ipify.org; img-src 'self' data: https:;">
+  <title>ระบบบริหารงานกองทุนเงินให้กู้ยืมเพื่อการศึกษา มหาวิทยาลัยอุบลราชธานี</title>
+  <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <link rel="stylesheet" href="style.css">
+  <script src="api.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
+<body>
+
+    <div id="customLoader" style="display: none;">
+        <div class="loader-box">
+            <div id="loaderText" style="font-size: 16px; margin-bottom: 10px; line-height: 1.4;">ระบบกำลังประมวลผล กรุณารอสักครู่</div>
+            <div class="loader-track"><div class="loader-bar"></div></div>
+        </div>
+    </div>
+
+    <div id="appLayout" class="app-wrapper">
+        <div id="sidebarOverlay" class="sidebar-overlay"></div>
+        
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <img src="https://img1.pic.in.th/images/Ubu_logo.png" alt="Logo" class="sidebar-logo">
+                <span style="font-weight: bold; font-size: 16px;">ระบบบริหารงาน กยศ.</span>
+            </div>
+            <ul class="sidebar-menu">
+                <div class="nav-header">เมนูหลักนักศึกษา</div>
+                <li class="nav-item user-nav">
+                    <a href="#" id="navUserDashboard" class="nav-link active">
+                        <i class="material-icons">dashboard</i><span>หน้าหลักข้อมูลของผู้กู้ยืม</span>
+                    </a>
+                </li>
+                <li class="nav-item user-nav" id="menu_userProfile" style="display: none;">
+                    <a href="#" id="navUserProfile" class="nav-link">
+                        <i class="material-icons">assignment_ind</i><span>ทะเบียนประวัตินักศึกษา</span>
+                    </a>
+                </li>
+                <li class="nav-item user-nav" id="menu_userActivity" style="display: none;">
+                    <a href="#" id="navUserActivity" class="nav-link">
+                        <i class="material-icons">volunteer_activism</i><span>ลงทะเบียนจิตอาสา กยศ.</span>
+                    </a>
+                </li>
+                <li class="nav-item user-nav" id="menu_userQueue" style="display: block;">
+                    <a href="#" id="navUserQueue" class="nav-link">
+                       <i class="material-icons">confirmation_number</i><span>ระบบจองคิวส่งเอกสาร</span>
+                    </a>
+                </li>
+                <li class="nav-item user-nav" id="menu_loan2569" style="display: none;">
+                    <a href="#" id="navLoan2569" class="nav-link">
+                        <i class="material-icons">monetization_on</i><span>ระบบยื่นกู้รายเก่าเลื่อนชั้นปี</span>
+                    </a>
+                </li>
+                <li class="nav-item user-nav" id="menu_overLoan" style="display: none;">
+                    <a href="#" id="navOverLoan" class="nav-link">
+                        <i class="material-icons">history_edu</i><span>ระบบยื่นกู้เกินกว่าปีหลักสูตร</span>
+                    </a>
+                </li>
+                <li class="nav-item user-nav" id="menu_userResign" style="display: none;">
+                    <a href="#" id="navUserResign" class="nav-link">
+                        <i class="material-icons">exit_to_app</i><span>ระบบแจ้งความประสงค์ลาออก</span>
+                    </a>
+                </li>
+                <li class="nav-item user-nav" id="menu_userTransfer" style="display: none;">
+                 <a href="#" id="navUserTransfer" class="nav-link">
+                  <i class="material-icons">transfer_within_a_station</i><span>ระบบย้ายสถานศึกษา กยศ.</span>
+                 </a>
+              </li>
+                <li class="nav-item user-nav" id="menu_userPetition" style="display: none;">
+                    <a href="#" id="navUserPetition" class="nav-link">
+                        <i class="material-icons">rate_review</i><span>ระบบยื่นคำร้องออนไลน์</span>
+                    </a>
+                </li>
+                <li class="nav-item user-nav" id="menu_userTrackPetition" style="display: none;">
+                    <a href="#" id="navUserTrackPetition" class="nav-link">
+                        <i class="material-icons">track_changes</i><span>ระบบติดตามคำร้อง กยศ.</span>
+                    </a>
+                </li>
+            </ul>
+        </aside>
+
+        <div class="main-content-wrapper" id="mainContent">
+            
+            <nav class="topbar">
+                <div style="display: flex; align-items: center; flex: 1; overflow: hidden;">
+                    <button class="btn" id="sidebarToggle" style="background:none; color:#333; padding:0; flex-shrink: 0;">
+                        <i class="material-icons">menu</i>
+                    </button>
+                    <span class="system-title">ระบบบริหารงาน กยศ. มหาวิทยาลัยอุบลราชธานี</span>   
+                </div>
+                
+                <div style="display: flex; align-items: center; gap: 10px; flex-shrink: 0;">
+                    <div class="user-profile-info">
+                        <div id="topbarUserName" style="font-weight: bold; color: #333;">กำลังโหลดข้อมูล</div>
+                        <div id="topbarUserRole" style="font-size: 12px; color: #777;">นักศึกษาผู้กู้ยืม</div>
+                    </div>
+                    <button id="navLogout" class="btn btn-danger btn-logout" title="ออกจากระบบ">
+                        <i class="material-icons">logout</i> 
+                        <span class="logout-text">ออกจากระบบ</span>
+                    </button>
+                </div>
+            </nav>
+
+            <div class="content-body">
+                
+                <div id="userDashboardSection" class="section active">
+                    <div class="student-card">
+                        <div class="student-card-left">
+                            <div class="profile-img-container">
+                                <img id="cardProfileImg" src="" class="profile-img" alt="Profile" style="display: none;">
+                                <label for="uploadProfileInput" class="upload-overlay" title="เปลี่ยนรูปโปรไฟล์">
+                                    <i class="material-icons" style="font-size: 20px;">camera_alt</i>
+                                </label>
+                                <input type="file" id="uploadProfileInput" accept="image/jpeg, image/png, image/webp" style="display: none;">
+                            </div>
+                            <div style="font-size: 14px; font-weight: bold; color: #555;" id="cardStudentId">-</div>
+                        </div>
+                        <div class="student-card-right">
+                            <img src="https://img1.pic.in.th/images/Ubu_logo.png" alt="Logo Watermark" class="card-footer-logo">
+                            <div class="student-header">
+                                <div class="student-title-th" id="cardFullName">-</div>
+                                <div class="student-title-en">Ubon Ratchathani University</div>
+                            </div>
+                            <div class="info-grid">
+                          <div class="info-item">
+                          <span class="info-label">คณะ/สังกัด:</span>
+                          <span class="info-value" id="cardFaculty">-</span>
+                        </div>
+    <div class="info-item">
+        <span class="info-label">อีเมล:</span>
+        <span class="info-value" id="cardEmail">-</span>
+    </div>
+    <div class="info-item">
+        <span class="info-label">สถานะบัญชี:</span>
+        <span class="info-value" style="color: green; font-weight: bold;"><i class="material-icons" style="font-size:14px; vertical-align:text-bottom;">verified_user</i> ปกติ</span>
+    </div>
+    <div class="info-item">
+        <span class="info-label">สถานะเเจ้งขอกู้ยืม กยศ. 2569:</span>
+        <span class="info-value" id="cardLoanStatus"><span style="color: #999;">กำลังตรวจสอบข้อมูล</span></span>
+    </div>
+</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="userProfileSection" class="section">
+                    <div class="card">
+                        <h2><i class="material-icons">assignment_ind</i> ระบบทะเบียนประวัติ</h2>
+                        <p style="color: #666; margin-bottom: 20px;">กรุณากรอกข้อมูลให้ครบถ้วนและตรงตามความเป็นจริง</p>
+                        <form id="eProfileForm">
+                            <div class="form-section-title">1. ข้อมูลส่วนบุคคลนักศึกษาผู้กู้ยืม</div>
+                            <div class="form-row">
+                                <div class="form-col"><div class="form-group"><label>รหัสนักศึกษา</label><input type="text" id="epStudentId" readonly class="adm-input-readonly"></div></div>
+                                <div class="form-col"><div class="form-group"><label>เลขประจำตัวประชาชน</label><input type="text" id="epIdCard" placeholder="กรอกเลขประจำตัวประชาชน 13 หลัก" pattern="[0-9]{13}" required></div></div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-col"><div class="form-group"><label>ชื่อ-นามสกุล (ภาษาไทย)</label><input type="text" id="epFullNameTH" readonly class="adm-input-readonly"></div></div>
+                                <div class="form-col"><div class="form-group"><label>ชื่อเล่น</label><input type="text" id="epNickname" required></div></div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-col"><div class="form-group"><label>วัน/เดือน/ปีเกิด</label><input type="date" id="epDob" required></div></div>
+                                <div class="form-col"><div class="form-group"><label>หมายเลขโทรศัพท์มือถือ</label><input type="tel" id="epPhone" required></div></div>
+                                <div class="form-col"><div class="form-group"><label>ระดับคะแนนเฉลี่ยสะสม (GPAX)</label><input type="number" step="0.01" id="epGpa" placeholder="0.00" required></div></div>
+                            </div>
+                            <div class="form-group"><label>โรคประจำตัว (ถ้ามี)</label><textarea id="epDisease" rows="2" placeholder="ระบุโรคประจำตัว หรือใส่เครื่องหมาย - หากไม่มี"></textarea></div>
+
+                            <div class="form-section-title">2. ข้อมูลครอบครัว</div>
+                            <div class="form-row">
+                                <div class="form-col"><div class="form-group"><label>ชื่อ-นามสกุล บิดา (ไม่ต้องระบุคำนำหน้า)</label><input type="text" id="epFatherName" required></div></div>
+                                <div class="form-col"><div class="form-group"><label>อาชีพ</label><input type="text" id="epFatherJob" required></div></div>
+                                <div class="form-col"><div class="form-group"><label>หมายเลขโทรศัพท์</label><input type="tel" id="epFatherPhone"></div></div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-col"><div class="form-group"><label>ชื่อ-นามสกุล มารดา (ไม่ต้องระบุคำนำหน้า)</label><input type="text" id="epMotherName" required></div></div>
+                                <div class="form-col"><div class="form-group"><label>อาชีพ</label><input type="text" id="epMotherJob" required></div></div>
+                                <div class="form-col"><div class="form-group"><label>หมายเลขโทรศัพท์</label><input type="tel" id="epMotherPhone"></div></div>
+                            </div>
+                            <div class="form-group">
+                                <label>สถานภาพบิดา-มารดา</label>
+                                <select id="epParentsStatus" required>
+                                    <option value="">เลือกสถานะ</option>
+                                    <option value="อยู่ด้วยกัน">อยู่ด้วยกัน</option>
+                                    <option value="แยกกันอยู่">แยกกันอยู่</option>
+                                    <option value="หย่าร้าง">หย่าร้าง</option>
+                                    <option value="บิดาเสียชีวิต">บิดาเสียชีวิต</option>
+                                    <option value="มารดาเสียชีวิต">มารดาเสียชีวิต</option>
+                                    <option value="เสียชีวิตทั้งคู่">เสียชีวิตทั้งคู่</option>
+                                </select>
+                            </div>
+                            <div style="margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ddd;">
+                                <label style="font-weight: bold; color: #555;">ข้อมูลสถานะครัวเรือน</label>
+                                <div class="form-row">
+                                    <div class="form-col"><div class="form-group"><label>จำนวนสมาชิกในครอบครัว (คน)</label><input type="number" id="epFamilyMembers" placeholder="นับรวมตัวนักศึกษา" required></div></div>
+                                    <div class="form-col"><div class="form-group"><label>รายได้รวมครัวเรือนต่อเดือน (บาท)</label><input type="number" id="epHouseholdIncome" placeholder="ระบุตัวเลขรายได้รวม" required></div></div>
+                                </div>
+                                <div class="form-group"><label>ภาระค่าใช้จ่าย / ภาระหนี้สิน</label><textarea id="epDebt" rows="2" placeholder="ระบุรายจำนวนค่าใช้จ่ายประมาณการ"></textarea></div>
+                            </div>
+
+                            <div class="form-section-title">3. ที่อยู่ปัจจุบันตามทะเบียนบ้าน</div>
+                            <div class="form-group"><label>บ้านเลขที่ หมู่ที่ ถนน</label><input type="text" id="epAddrNo" placeholder="เช่น 85/1 หมู่ที่ 4 ถนนสถลมาร์ค" required></div>
+                            <div class="form-row address-row">
+                                <div class="form-col"><div class="form-group"><label>ตำบล/แขวง</label><input type="text" id="epSubDistrict" required></div></div>
+                                <div class="form-col"><div class="form-group"><label>อำเภอ/เขต</label><input type="text" id="epDistrict" required></div></div>
+                                <div class="form-col"><div class="form-group"><label>จังหวัด</label><input type="text" id="epProvince" required></div></div>
+                                <div class="form-col"><div class="form-group"><label>รหัสไปรษณีย์</label><input type="text" id="epZipcode" required></div></div>
+                            </div>
+                            <div class="form-group"><label>ลิงก์ Google Map (ถ้ามี)</label><input type="url" id="epMapLink" placeholder="https://maps.app.goo.gl/..."></div>
+                            
+                            <div style="margin-top: 30px; text-align: center;">
+                                <button type="submit" class="btn btn-login-new" style="width: 200px; background: linear-gradient(135deg, #1976D2 0%, #1565c0 100%);"><i class="material-icons" style="margin-right: 5px;">save</i> บันทึกข้อมูลประวัติ</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div id="userActivitySection" class="section">
+                    <div class="card">
+                        <h2><i class="material-icons">volunteer_activism</i> กิจกรรมจิตอาสาที่เปิดรับลงทะเบียน</h2>
+                        <div class="activity-header-wrap">
+                            <p class="activity-desc">โปรดเลือกรอบเวลาที่ท่านประสงค์เข้าร่วมกิจกรรม (จำกัดการลงทะเบียนสูงสุด 3 ช่วงเวลาต่อ 1 วัน)</p>
+                            <button class="btn btn-info btn-history-mobile" id="btnLoadActivityHistory">
+                                <i class="material-icons">history</i> ประวัติการลงทะเบียน
+                            </button>
+                        </div>
+                        <div id="activityCardContainer" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px;">
+                            <div style="grid-column: 1/-1; text-align: center; padding: 20px; color: #999;">กำลังดึงข้อมูลกิจกรรมจากระบบ</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="userQueue" class="section">
+                    <div class="card">
+                        <h2><i class="material-icons">confirmation_number</i>จองคิวจัดส่งเอกสาร กยศ.</h2>
+                        
+                        <div id="myQueueTicketArea" style="display:none; margin-bottom: 30px;">
+    <style>
+         .my-queue-grid {
+        display: grid !important;
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 20px !important;
+        margin-top: 20px !important;
+    }
+
+    /* บังคับให้การ์ดทุกตัว "ไม่ยืด" เต็มความกว้าง */
+    .q-card-slot {
+        width: 100% !important; /* ยืนยันความกว้าง */
+        max-width: none !important;
+        display: flex !important;
+        flex-direction: column;
+    }
+        .modern-queue-ticket {
+            position: relative;
+            display: flex !important;
+            flex-direction: row !important; 
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+            color: white;
+            min-height: 140px;
+            width: 100%;
+        }
+        
+        .modern-queue-ticket::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image: url('https://img1.pic.in.th/images/Ubu_logo.png');
+            background-size: 150px;
+            background-position: center;
+            background-repeat: no-repeat;
+            opacity: 0.15;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .modern-queue-ticket::after {
+            content: attr(data-watermark); 
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-25deg);
+            font-size: 26px; 
+            font-weight: 800;
+            pointer-events: none;
+            z-index: 1;
+            white-space: nowrap;
+            letter-spacing: 3px;
+        }
+
+        .qt-left-modern {
+            flex: 1;
+            padding: 15px 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            z-index: 2;
+            min-width: 0; 
+        }
+
+        .qt-right-modern {
+            width: 110px;
+            min-width: 110px;
+            background: rgba(255,255,255,0.95);
+            color: #333;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-left: 2px dashed rgba(0,0,0,0.25);
+            position: relative;
+            z-index: 2;
+        }
+
+        .qt-right-modern::before, .qt-right-modern::after {
+            content: '';
+            position: absolute;
+            left: -8px;
+            width: 16px;
+            height: 16px;
+            background: #fff;
+            border-radius: 50%;
+        }
+        .qt-right-modern::before { top: -8px; }
+        .qt-right-modern::after { bottom: -8px; }
+
+        #qrCodeContainer {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: white;
+            padding: 4px;
+            border-radius: 6px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            width: 100%;
+            box-sizing: border-box;
+        }
+        #qrCodeContainer img, #qrCodeContainer canvas {
+            width: 100% !important;
+            max-width: 80px !important;
+            height: auto !important;
+        }
+
+        @media (max-width: 500px) {
+            .modern-queue-ticket::after { 
+                font-size: 16px !important; 
+            }
+            .qt-left-modern { 
+                padding: 12px 10px !important; 
+            }
+            .qt-right-modern { 
+                width: 90px !important; 
+                min-width: 90px !important; 
+                padding: 8px !important; 
+            }
+            
+            .info-label { 
+                font-size: 10px !important; 
+                letter-spacing: 0 !important; 
+            }
+            #ticketNumber { 
+                font-size: 36px !important; 
+                margin: 2px 0 !important; 
+            }
+            #ticketName { 
+                font-size: 13px !important; 
+                white-space: nowrap; 
+                overflow: hidden; 
+                text-overflow: ellipsis; 
+            }
+            
+            .ticket-info-grid { 
+                flex-direction: column; 
+                gap: 4px !important; 
+                padding: 8px !important; 
+                margin-top: 8px !important; 
+            }
+            .ticket-info-grid > div { 
+                display: flex; 
+                justify-content: space-between; 
+                align-items: center; 
+            }
+            .ticket-info-grid .info-value { 
+                font-size: 12px !important; 
+            }
+            
+            .scan-label { 
+                font-size: 10px !important; 
+                margin-bottom: 4px !important; 
+            }
+            #btnCancelQueue { 
+                font-size: 11px !important; 
+                padding: 2px !important; 
+                height: 26px !important; 
+                margin-top: 8px !important; 
+            }
+        }
+    </style>
+
+    <div class="modern-queue-ticket" id="ticketCardBg" data-watermark="UBU TICKET">
+        <div class="qt-left-modern" id="ticketCardText">
+            <div style="overflow: hidden;">
+                <div class="info-label" style="font-size:11px; opacity:0.8; text-transform: uppercase;">หมายเลขคิวรับบริการ</div>
+                <div id="ticketNumber" style="font-size: 48px; font-weight: 800; line-height: 1; margin: 5px 0;">-</div>
+                <div id="ticketName" style="font-size: 16px; font-weight: 500;">-</div>
+            </div>
+            <div class="ticket-info-grid" style="display: flex; gap: 15px; margin-top: 10px; background: rgba(0,0,0,0.15); padding: 8px 12px; border-radius: 6px;">
+                <div>
+                    <div class="info-label">วันที่นัดหมาย</div>
+                    <div class="info-value" id="ticketDate" style="font-weight: bold;">-</div>
+                </div>
+                <div>
+                    <div class="info-label">เวลารับบริการ</div>
+                    <div class="info-value" id="ticketTime" style="font-weight: bold;">-</div>
+                </div>
+            </div>
+        </div>
+        <div class="qt-right-modern">
+            <div class="scan-label" style="font-size: 10px; font-weight: bold; margin-bottom: 5px;">สแกนยืนยัน</div>
+            <div id="qrCodeContainer"></div>
+            <button class="btn btn-danger" id="btnCancelQueue" style="margin-top: 8px; width: 100%; border-radius: 20px; font-size: 11px; height: 28px; padding: 0;">
+                ยกเลิกคิว
+            </button>
+        </div>
+    </div>
+</div>
+                        <div id="bookingSectionWrapper">
+                         <div id="bookingSlotsContainer" class="slot-grid"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="userLoan2569Section" class="section">
+                    <div class="card" style="border: none; box-shadow: 0 4px 20px rgba(0,0,0,0.08);">
+                        <div style="text-align: center; margin-bottom: 35px;">
+                            <div style="background: linear-gradient(135deg, #1565C0 0%, #1E88E5 100%); width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px auto; box-shadow: 0 4px 10px rgba(21, 101, 192, 0.3);">
+                                <i class="material-icons" style="color: white; font-size: 32px;">monetization_on</i>
+                            </div>
+                            <h2 style="border: none; justify-content: center; margin-bottom: 5px; font-weight: 700; color: #1565C0;">
+                                ยื่นคำร้องขอกู้ยืมเงิน ปีการศึกษา 2569 
+                            </h2>
+                            <p style="color: #777; font-size: 15px; margin: 0;">สำหรับนักศึกษาผู้กู้ยืมรายเก่าเลื่อนชั้นปี</p>
+                        </div>
+
+                        <div class="loan-stepper" id="loanStepper">
+                            <div class="loan-step active" id="step1-indicator" data-label="ตรวจสอบสิทธิ์">1</div>
+                            <div class="loan-step" id="step2-indicator" data-label="ระบุวงเงินกู้">2</div>
+                            <div class="loan-step" id="step3-indicator" data-label="เสร็จสิ้น">3</div>
+                        </div>
+
+                        <div id="loanStep1">
+                            <div style="text-align:center; padding: 50px 20px; background: #f8f9fa; border-radius: 16px; border: 1px dashed #90CAF9; max-width: 600px; margin: 0 auto;">
+                                <i class="material-icons" style="font-size: 64px; color: #64B5F6; margin-bottom: 15px;">fact_check</i>
+                                <h3 style="color: #1565C0; margin: 0 0 10px 0; font-size: 20px;">ตรวจสอบคุณสมบัติเบื้องต้น</h3>
+                                <p style="color: #555; font-size: 15px; margin: 0 auto 25px auto; line-height: 1.6;">
+                                    ระบบจะทำการประมวลผลระดับคะแนนเฉลี่ยสะสม (GPAX) และจำนวนหน่วยกิตจิตอาสา<br>เพื่อประเมินสิทธิ์ในการขอกู้ยืมเงินของท่าน
+                                </p>
+                                <button class="btn btn-login-new" id="btnCheckEligibility" style="width: auto; padding: 12px 40px; border-radius: 30px;">
+                                    <i class="material-icons" style="font-size: 18px; margin-right: 5px;">search</i> ตรวจสอบสิทธิ์การกู้ยืม
+                                </button>
+                            </div>
+                        </div>
+
+                        <div id="loanStep2" style="display:none; animation: fadeIn 0.5s;">
+                            <div id="loanInfoCard" style="background:#E3F2FD; padding:20px; border-radius:12px; margin-bottom:25px; border-left: 5px solid #1976D2; font-size:15px; line-height:1.6;"></div>
+                            
+                            <div id="loanFailMessage" style="display:none; text-align:center; padding:40px; border-radius:12px; background:#fff5f5; border: 1px solid #ffcdd2;">
+                                <i class="material-icons" style="font-size: 64px; color: #d32f2f; margin-bottom: 10px;">gpp_bad</i>
+                                <h3 style="color: #c62828;">คุณสมบัติของท่านไม่ผ่านเกณฑ์การกู้ยืม</h3>
+                                <p>ระดับเกรดเฉลี่ยสะสมต่ำกว่าเกณฑ์ 1.50 หรือ หน่วยกิตกิจกรรมจิตอาสาไม่ครบ 12 หน่วยกิต</p>
+                                <p style="color: #666; font-size: 14px;">ระบบไม่อนุญาตให้ดำเนินการต่อ หากท่านประสงค์ให้ตรวจสอบข้อมูลประมวลผลอีกครั้ง รอบที่ 2 หรือมีเหตุผลความจำเป็น กรุณาดำเนินการยื่นคำร้องผ่านระบบคำร้องออนไลน์</p>
+                                <button class="btn btn-login-new" id="btnGoToPetitionLoan" style="margin-top: 15px; border-radius: 30px; width: auto; padding: 10px 30px; background: linear-gradient(135deg, #d32f2f 0%, #e53e3e 100%);">
+                                    <i class="material-icons" style="vertical-align: middle; margin-right: 5px;">rate_review</i> เข้าสู่หน้ายื่นคำร้องออนไลน์
+                                </button>
+                            </div>
+
+                            <div id="loanFormArea" style="display:none;">
+                                <h4 style="color: #1565C0; margin-bottom: 20px; font-weight: 600;">
+                                    <i class="material-icons" style="font-size: 20px; vertical-align: text-bottom;">check_box</i> โปรดเลือกรายการที่ประสงค์ขอกู้ยืม
+                                </h4>
+                                <div class="loan-options-grid">
+                                    <div class="loan-option-card" id="cardLiving">
+                                        <input type="checkbox" id="checkLiving" style="display: none;">
+                                        <div class="icon-box"><i class="material-icons">restaurant_menu</i></div>
+                                        <div class="loan-option-content">
+                                            <h4>ค่าครองชีพ</h4>
+                                            <p>เดือนละ 3,000 บาท จำนวน 6 เดือน</p>
+                                            <span style="font-size: 12px; color: #1976D2; font-weight: bold;">รวม 18,000 บาท / ภาคการศึกษา</span>
+                                        </div>
+                                        <div style="margin-left: auto;">
+                                            <i class="material-icons check-icon" style="color: #ddd; font-size: 24px;">radio_button_unchecked</i>
+                                        </div>
+                                    </div>
+                                    <div class="loan-option-card" id="cardTuition">
+                                        <input type="checkbox" id="checkTuition" style="display: none;">
+                                        <div class="icon-box"><i class="material-icons">school</i></div>
+                                        <div class="loan-option-content">
+                                            <h4>ค่าเล่าเรียน (ค่าเทอม)</h4>
+                                            <p>โอนเงินตรงเข้าบัญชีสถานศึกษา</p>
+                                            <span style="font-size: 12px; color: #f57c00; font-weight: bold;">ระบุยอดค่าธรรมเนียมการศึกษาตามใบเเจ้งผลลงทะเบียน</span>
+                                        </div>
+                                        <div style="margin-left: auto;">
+                                            <i class="material-icons check-icon" style="color: #ddd; font-size: 24px;">radio_button_unchecked</i>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div id="tuitionInputArea" style="margin-top: 20px; display: none;">
+                                    <div style="background: #fff8e1; padding: 20px; border-radius: 12px; border: 1px solid #ffe0b2;">
+                                        <div class="modern-input-group" style="margin-bottom: 0;">
+                                            <input type="number" id="inputTuition" class="modern-input" placeholder=" " style="background: white;">
+                                            <label class="modern-label" style="background: transparent;">ระบุยอดเงินค่าเล่าเรียนตามจริง (บาท)</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div style="background: linear-gradient(to right, #1565C0, #42A5F5); color: #fff; padding: 25px; border-radius: 16px; margin-top: 30px; display: flex; justify-content: space-between; align-items: center;">
+                                    <div>
+                                        <div style="font-size: 13px; opacity: 0.8;">ยอดเงินกู้รวมทั้งสิ้น</div>
+                                    </div>
+                                    <div style="font-size: 32px; font-weight: 700;">
+                                        <span id="showTotalLoan">0</span> <span style="font-size: 16px;">บาท</span>
+                                    </div>
+                                </div>
+
+                                <div style="display: flex; gap: 15px; margin-top: 25px;">
+                                    <button class="btn" id="btnBackToLoanStep1" style="flex: 1; background: #eceff1; border-radius: 8px;">ย้อนกลับ</button>
+                                    <button class="btn btn-login-new" id="btnConfirmSubmitLoan" style="flex: 2; height: 50px; font-size: 16px; border-radius: 8px;">
+                                        ยืนยันการส่งคำร้อง <i class="material-icons" style="margin-left: 8px;">send</i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="loanStep3" style="display:none; animation: fadeInUp 0.5s;">
+                            <div class="loan-receipt-card">
+                                <div class="receipt-header" style="background: linear-gradient(135deg, #1976D2 0%, #42A5F5 100%);">
+                                    <i class="material-icons" style="font-size: 50px;">verified</i>
+                                    <p style="margin: 5px 0 0 0; opacity: 0.9;">การยื่นคำร้องขอกู้ยืมเสร็จสมบูรณ์</p>
+                                    <div class="status-tag" style="color: #1565C0;">รอสถานศึกษาตรวจสอบข้อมูล เเละรับการเเจ้งเตือนรายงานสถานภาพการศึกษาต่อ</div>
+                                </div>
+                                <div class="receipt-body">
+                                    <div style="text-align: center; margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 15px;">
+                                        <span style="font-size: 18px; font-weight: bold; color: #333;" id="receiptName">-</span>
+                                        <span style="display: block; color: #555;" id="summaryStudentId">-</span>
+                                    </div>
+                                    <div class="receipt-info-row"><span>คณะ/สังกัด</span><span id="summaryFaculty">-</span></div>
+                                    <div class="receipt-info-row"><span>ประเภทคำร้อง</span><span id="summaryType">-</span></div>
+                                    <div class="receipt-info-row"><span>ค่าครองชีพ</span><span id="summaryLiving">-</span></div>
+                                    <div class="receipt-info-row"><span>ค่าเล่าเรียน</span><span id="summaryTuition">-</span></div>
+                                    <div class="receipt-total" style="background:#E3F2FD; color:#1565C0;">
+                                        ยอดรวมสุทธิ: <span id="summaryTotal">-</span> บาท
+                                    </div>
+                                    <button class="btn btn-primary" id="btnBackToDashboard1" style="width: 100%; margin-top: 25px; border-radius: 30px;">กลับสู่หน้าหลักของระบบ</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="userOverLoanSection" class="section">
+                    <div class="card" style="border: none; box-shadow: 0 4px 20px rgba(0,0,0,0.08);">
+                        <div style="text-align: center; margin-bottom: 35px;">
+                            <div style="background: var(--over-gradient, linear-gradient(135deg, #7b1fa2 0%, #ba68c8 100%)); width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px auto; box-shadow: 0 4px 10px rgba(123, 31, 162, 0.3);">
+                                <i class="material-icons" style="color: white; font-size: 32px;">history_edu</i>
+                            </div>
+                            <h2 style="border: none; justify-content: center; margin-bottom: 5px; font-weight: 700; color: var(--over-primary, #7b1fa2);">
+                                คำร้องขอกู้ยืมเงินเกินจำนวนปีที่กำหนดในหลักสูตร (ปีการศึกษา 2569)
+                            </h2>
+                            <p style="color: #777; font-size: 15px; margin: 0;">สำหรับนักศึกษารหัส 65 ขึ้นไป (ยกเว้นสาขาเเพทยศาสตร์ หลักสูตร 6 ปี/เภสัชศาสตร์ หลักสูตร 6 ปี/ศิลปประยุกต์และสถาปัตยกรรมศาสตร์ หลักสูตร 5 ปี) ที่มีการลงทะเบียนเรียนเกินกว่าระยะเวลาที่กำหนดในหลักสูตร</p>
+                        </div>
+
+                        <div class="loan-stepper" id="overStepper">
+                            <div class="loan-step over-step active" id="over-step1-indicator" data-label="ตรวจสอบสิทธิ์">1</div>
+                            <div class="loan-step over-step" id="over-step2-indicator" data-label="ระบุวงเงินกู้">2</div>
+                            <div class="loan-step over-step" id="over-step3-indicator" data-label="เสร็จสิ้น">3</div>
+                        </div>
+
+                        <div id="overStep1">
+                            <div style="text-align:center; padding: 50px 20px; background: var(--over-light, #f3e5f5); border-radius: 16px; border: 1px dashed var(--over-secondary, #ce93d8); max-width: 600px; margin: 0 auto;">
+                                <i class="material-icons" style="font-size: 64px; color: var(--over-secondary, #ce93d8); margin-bottom: 15px;">manage_search</i>
+                                <h3 style="color: var(--over-primary, #7b1fa2); margin: 0 0 10px 0; font-size: 20px;">ตรวจสอบคุณสมบัติการกู้ยืมเกินหลักสูตร</h3>
+                                <p style="color: #555; font-size: 15px; margin: 0 auto 25px auto; line-height: 1.6;">
+                                    ระบบจะทำการดึงข้อมูลเพื่อประเมินสิทธิ์ในการขอกู้ยืมเงินเกินหลักสูตรของท่าน
+                                </p>
+                                <button class="btn btn-over-loan" id="btnCheckOverEligibility" style="width: auto; padding: 12px 40px; border-radius: 30px; background: var(--over-primary, #7b1fa2); color:white; border:none;">
+                                    <i class="material-icons" style="font-size: 18px; margin-right: 5px; vertical-align:middle;">search</i> ตรวจสอบสิทธิ์การกู้ยืม
+                                </button>
+                            </div>
+                        </div>
+
+                        <div id="overStep2" style="display:none; animation: fadeIn 0.5s;">
+                            <div id="overInfoBox" style="background:var(--over-light, #f3e5f5); padding:20px; border-radius:12px; margin-bottom:25px; border-left: 5px solid var(--over-primary, #7b1fa2); font-size:15px; line-height:1.6; color: var(--over-primary, #7b1fa2);"></div>
+                            
+                            <div id="overLoanFailMessage" style="display:none; text-align:center; padding:40px; border-radius:12px; background:#fff5f5; border: 1px solid #ffcdd2;">
+                                <i class="material-icons" style="font-size: 64px; color: #d32f2f; margin-bottom: 10px;">gpp_bad</i>
+                                <h3 style="color: #c62828;">คุณสมบัติของท่านไม่ผ่านเกณฑ์การกู้ยืม</h3>
+                                <p>ระดับเกรดเฉลี่ยสะสมต่ำกว่าเกณฑ์ 2.00 หรือ หน่วยกิตกิจกรรมจิตอาสาไม่ครบ 12 หน่วยกิต</p>
+                                <p style="color: #666; font-size: 14px;">ระบบไม่อนุญาตให้ดำเนินการต่อ หากท่านประสงค์ให้ตรวจสอบข้อมูลประมวลผลอีกครั้ง รอบ 2 หรือมีเหตุผลความจำเป็น กรุณาดำเนินการยื่นคำร้องผ่านระบบคำร้องออนไลน์</p>
+                                <button class="btn btn-login-new" id="btnGoToPetitionOverLoan" style="margin-top: 15px; border-radius: 30px; width: auto; padding: 10px 30px; background: linear-gradient(135deg, #d32f2f 0%, #e53e3e 100%);">
+                                    <i class="material-icons" style="vertical-align: middle; margin-right: 5px;">rate_review</i> เข้าสู่หน้ายื่นคำร้องออนไลน์
+                                </button>
+                            </div>
+
+                            <div id="overLoanFormArea" style="display:none;">
+                                <form id="overLoanForm">
+                                    <div class="form-section-title" style="margin-top:0; color: var(--over-primary, #7b1fa2); border-left-color: var(--over-secondary, #ce93d8);">ข้อมูลการศึกษาเพิ่มเติม</div>
+                                    <div class="form-row" style="margin-bottom: 20px;">
+                                        <div class="form-group">
+                                            <label style="font-weight:bold; color:#333;">จำนวนหน่วยกิตที่เหลือ <span style="color:red;">*</span></label>
+                                            <input type="number" id="overRemCredits" class="floating-input" required placeholder="ระบุจำนวนหน่วยกิต">
+                                        </div>
+                                        <div class="form-group">
+                                            <label style="font-weight:bold; color:#333;">ปีการศึกษาที่คาดว่าจะสำเร็จการศึกษา <span style="color:red;">*</span></label>
+                                            <input type="number" id="overGradYear" class="floating-input" required placeholder="เช่น 2569">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-section-title" style="color: var(--over-primary, #7b1fa2); border-left-color: var(--over-secondary, #ce93d8);">ระบุประเภทการขอกู้ยืมเงิน (กรณีเกินหลักสูตร)</div>
+                                    <div class="form-group" style="max-width: 400px;">
+                                         <select id="overType" class="floating-input" required style="border-color: var(--over-secondary, #ce93d8);">
+                                             <option value="">-- กรุณาเลือกประเภทการขอกู้ยืม --</option>
+                                             <option value="Living">ขอกู้เฉพาะค่าครองชีพ (18,000 บาท)</option>
+                                             <option value="Tuition">ขอกู้เฉพาะค่าเล่าเรียน</option>
+                                             <option value="Both">ขอกู้ทั้งค่าครองชีพและค่าเล่าเรียน</option>
+                                         </select>
+                                    </div>
+                                    <div id="overTuitionWrapper" style="display:none; background: #fff; padding: 20px; border-radius: 8px; border: 1px solid var(--over-secondary, #ce93d8); margin-bottom:20px; max-width: 400px;">
+                                        <div class="form-group" style="margin-bottom:0;">
+                                            <label style="font-weight:bold; color:var(--over-primary, #7b1fa2);">ระบุยอดเงินค่าเล่าเรียนตามจริง (บาท) <span style="color:red;">*</span></label>
+                                            <input type="number" id="overTuitionAmount" class="floating-input" placeholder="ระบุตัวเลขตามใบแจ้งการชำระเงิน">
+                                        </div>
+                                    </div>
+                                    
+                                    <div style="display: flex; gap: 15px; margin-top: 25px;">
+                                        <button type="button" class="btn" id="btnBackToOverLoanStep1" style="flex: 1; background: #eceff1; border-radius: 8px;">ย้อนกลับ</button>
+                                        <button type="submit" class="btn" style="flex: 2; height: 50px; font-size: 16px; border-radius: 8px; background: var(--over-primary, #7b1fa2); color:white; border:none;">ยืนยันการส่งคำร้อง (เกินหลักสูตร)</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                        <div id="overStep3" style="display:none; animation: fadeInUp 0.5s;">
+                            <div class="loan-receipt-card" style="border: 2px solid var(--over-light, #f3e5f5);">
+                                <div class="over-receipt-header" style="background: var(--over-gradient, linear-gradient(135deg, #7b1fa2 0%, #ba68c8 100%)); color:white; padding:20px; text-align:center; border-radius:10px 10px 0 0;">
+                                    <i class="material-icons" style="font-size: 50px;">verified</i>
+                                    <p style="margin: 5px 0 0 0; opacity: 0.9;">การยื่นคำร้องขอกู้ยืมเกินหลักสูตรเสร็จสมบูรณ์</p>
+                                    <div class="status-tag" style="background:white; color: var(--over-primary, #7b1fa2); display:inline-block; padding:3px 10px; border-radius:20px; margin-top:10px; font-size:12px;">รอสถานศึกษาตรวจสอบข้อมูล</div>
+                                </div>
+                                <div class="receipt-body" style="padding:20px;">
+                                    <div style="text-align: center; margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 15px;">
+                                        <span style="font-size: 18px; font-weight: bold; color: #333;" id="overReceiptName">-</span>
+                                        <span style="display: block; color: #555;" id="overSummaryStudentId">-</span>
+                                    </div>
+                                    <div class="receipt-info-row"><span>ประเภทคำร้อง</span><span id="overSummaryType">-</span></div>
+                                    <div class="receipt-info-row"><span>จำนวนหน่วยกิตคงเหลือ</span><span id="overSummaryCredits">-</span></div>
+                                    <div class="receipt-info-row"><span>ปีที่คาดว่าจะสำเร็จการศึกษา</span><span id="overSummaryGrad">-</span></div>
+                                    <div class="receipt-total" style="background:var(--over-light, #f3e5f5); color:var(--over-primary, #7b1fa2); text-align:center; padding:10px; border-radius:8px; margin-top:15px; font-weight:bold;">
+                                        สถานะ: ระบบได้รับข้อมูลคำร้องของท่านเรียบร้อยแล้ว
+                                    </div>
+                                    <button class="btn" id="btnBackToDashboard2" style="width: 100%; margin-top: 25px; border-radius: 30px; background: var(--over-primary, #7b1fa2); color:white; border:none; padding:10px;">กลับสู่หน้าหลักของระบบ</button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+    <div id="userTransferSection" class="section">
+    <div class="card" style="border: none; box-shadow: 0 4px 20px rgba(0,0,0,0.08);">
+        <div style="text-align: center; margin-bottom: 30px;">
+            <div style="background: linear-gradient(135deg, #00897b 0%, #26a69a 100%); width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px auto;">
+                <i class="material-icons" style="color: white; font-size: 32px;">transfer_within_a_station</i>
+            </div>
+            <h2 style="border: none; justify-content: center; margin-bottom: 5px; font-weight: 700; color: #333;">
+                แจ้งข้อมูลรายเก่าย้ายสถานศึกษา / เปลี่ยนระดับ
+            </h2>
+            <p style="color: #777; font-size: 15px; margin: 0;">กรอกข้อมูลเพิ่มเติมเพื่อแจ้งความประสงค์การขอยื่นกู้ใหม่ กรณีผู้กู้ยืมรายเก่าย้ายสถานศึกษา หรือเปลี่ยนระดับการศึกษา เเละปัจจุบันขอยื่นกู้ที่ใหม่</p>
+        </div>
+
+        <div id="transferStep1">
+            <form id="transferForm">
+                <div class="form-row">
+                    <div class="form-col">
+                        <div class="form-group">
+    <label>เลขบัตรประจำตัวประชาชน <span style="color:red;">*</span></label>
+    <input type="text" id="tfIdCard" class="modern-input" placeholder="ระบุเลขบัตรประจำตัวประชาชน 13 หลัก" pattern="[0-9]{13}" required>
+</div>
+                    </div>
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label>ชื่อ - นามสกุล</label>
+                            <input type="text" id="tfName" class="modern-input adm-input-readonly" readonly>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label>ระดับการศึกษา</label>
+                            <input type="text" id="tfLevel" class="modern-input" value="ป.ตรี" readonly style="background:#f5f5f5; color:#d32f2f; font-weight:bold;">
+                        </div>
+                    </div>
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label>ชั้นปีการศึกษา <span style="color:red;">*</span></label>
+                            <select id="tfYear" class="modern-input" required>
+                                <option value="">-- เลือกชั้นปี --</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>สถานะ</label>
+                    <input type="text" id="tfStatus" class="modern-input" value="ย้ายสถานศึกษา" readonly style="background:#f5f5f5; color:#1976D2; font-weight:bold;">
+                </div>
+                <div class="form-row">
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label>รหัสสถานศึกษา (ปัจจุบัน)</label>
+                            <input type="text" id="tfInstCode" class="modern-input" value="001857" readonly style="background:#f5f5f5;">
+                        </div>
+                    </div>
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label>ชื่อสถานศึกษา (ปัจจุบัน)</label>
+                            <input type="text" id="tfInstName" class="modern-input" value="มหาวิทยาลัยอุบลราชธานี" readonly style="background:#f5f5f5;">
+                        </div>
+                    </div>
+                </div>
+                <div style="margin-top: 25px;">
+                    <button type="submit" class="btn btn-primary" style="width: 100%; height: 50px; font-size: 16px; border-radius: 8px;">
+                        บันทึกยืนยันข้อมูล <i class="material-icons" style="margin-left: 8px; vertical-align: middle;">save</i>
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <div id="transferStep2" style="display:none; text-align:center; padding:40px;">
+            <div style="width:80px; height:80px; background:#e8f5e9; color:#2e7d32; border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 20px auto;">
+                <i class="material-icons" style="font-size:40px;">check_circle</i>
+            </div>
+            <h3 style="color:#2e7d32;">ระบบได้รับข้อมูลการแจ้งย้ายสถานศึกษาเรียบร้อยแล้ว</h3>
+            <p style="color:#666;">ข้อมูลการย้ายสถานศึกษาและเปลี่ยนระดับของท่านได้รับการบันทึกเข้าสู่ระบบแล้ว<br>หากต้องการแก้ไขเพิ่มเติมโปรดติดต่อเจ้าหน้าที่</p>
+        </div>
+    </div>
+</div>
+
+                <div id="userResignSection" class="section">
+                    <div class="card" style="border: none; box-shadow: 0 4px 20px rgba(0,0,0,0.08);">
+                        <div style="text-align: center; margin-bottom: 30px;">
+                            <div style="background: linear-gradient(135deg, #d32f2f 0%, #e57373 100%); width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px auto; box-shadow: 0 4px 10px rgba(211, 47, 47, 0.3);">
+                                <i class="material-icons" style="color: white; font-size: 32px;">exit_to_app</i>
+                            </div>
+                            <h2 style="border: none; justify-content: center; margin-bottom: 5px; font-weight: 700; color: #333;">
+                                เเจ้งข้อมูลการลาออก/พ้นสภาพ/ย้ายคณะสาขาวิชา
+                            </h2>
+                            <p style="color: #777; font-size: 15px; margin: 0;">ตรวจสอบสถานะและแจ้งข้อมูลการลาออกหรือย้ายสถานศึกษา</p>
+                        </div>
+
+                        <div id="resignStep1" style="text-align:center;">
+                            <div style="padding: 40px 20px; background: #fff5f5; border-radius: 16px; border: 1px dashed #ef9a9a; max-width: 600px; margin: 0 auto;">
+                                <h3 style="color: #c62828; margin: 0 0 10px 0;">ตรวจสอบรายชื่อผู้มีสิทธิ์ดำเนินการ</h3>
+                                <p style="color: #555; margin-bottom: 25px;">ระบบจะตรวจสอบข้อมูลสถานะของท่านจากฐานข้อมูล</p>
+                                <button class="btn btn-danger" id="btnCheckResignStatus" style="padding: 12px 30px; border-radius: 30px;">
+                                    <i class="material-icons" style="margin-right: 5px;">search</i> ตรวจสอบข้อมูล
+                                </button>
+                            </div>
+                        </div>
+
+                        <div id="resignStep2" style="display:none; animation: fadeIn 0.5s;">
+                            <div style="background: #fafafa; padding: 20px; border-radius: 12px; margin-bottom: 25px; border-left: 5px solid #d32f2f;">
+                                <h4 style="margin-top:0; color:#333;">ข้อมูลประจำตัวนักศึกษา</h4>
+                                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; font-size:14px;">
+                                    <div><b>ชื่อ-นามสกุล:</b> <span id="res_stdName">-</span></div>
+                                    <div><b>รหัสประจำตัวนักศึกษา:</b> <span id="res_stdId">-</span></div>
+                                    <div><b>คณะ/สังกัด:</b> <span id="res_stdFaculty">-</span></div>
+                                    <div><b>หลักสูตร:</b> <span id="res_stdCurr">-</span></div>
+                                </div>
+                            </div>
+
+                            <form id="resignForm">
+                                <h4 style="color:#c62828;">โปรดระบุสาเหตุการลาออก</h4>
+                                <div class="loan-options-grid" style="margin-bottom: 20px;">
+                                    <div class="loan-option-card" id="cardResignMove">
+                                        <div class="icon-box"><i class="material-icons">school</i></div>
+                                        <div class="loan-option-content">
+                                            <h4>ย้ายสถานศึกษา</h4>
+                                            <p>ลาออกเพื่อศึกษาต่อยังสถาบันอื่น</p>
+                                        </div>
+                                        <input type="radio" name="resignType" value="ย้ายสถานศึกษา" style="display:none;">
+                                    </div>
+                                    <div class="loan-option-card" id="cardResignChange">
+                                        <div class="icon-box"><i class="material-icons">published_with_changes</i></div>
+                                        <div class="loan-option-content">
+                                            <h4>ย้ายคณะ/สาขาวิชา</h4>
+                                            <p>ภายในมหาวิทยาลัยอุบลราชธานี</p>
+                                        </div>
+                                        <input type="radio" name="resignType" value="ย้ายคณะภายใน" style="display:none;">
+                                    </div>
+                                    <div class="loan-option-card" id="cardResignQuit">
+                                        <div class="icon-box"><i class="material-icons">no_accounts</i></div>
+                                        <div class="loan-option-content">
+                                            <h4>ไม่ได้ศึกษาต่อ</h4>
+                                            <p>ยุติการศึกษาและขอยกเลิกสิทธิ์</p>
+                                        </div>
+                                        <input type="radio" name="resignType" value="ไม่ได้ศึกษาต่อ" style="display:none;">
+                                    </div>
+                                </div>
+
+                                <div id="resignDetailArea" style="display:none; background:#fff; padding:20px; border:1px solid #ddd; border-radius:12px; margin-bottom:20px;">
+                                    <div class="form-group">
+                                        <label>วันที่แจ้งความประสงค์ลาออก (ข้อมูลจาก REG UBU)</label>
+                                        <input type="date" id="inputResignDate" class="modern-input" required>
+                                    </div>
+                                    <div id="inputGroup_NewUni" style="display:none;">
+                                        <div class="form-group">
+                                            <label>ชื่อสถานศึกษาปลายทางที่ย้ายไปศึกษาต่อ</label>
+                                            <input type="text" id="inputNewInstitution" class="modern-input" placeholder="ระบุชื่อมหาวิทยาลัย/สถาบันการศึกษา">
+                                        </div>
+                                    </div>
+                                    <div id="inputGroup_NewFac" style="display:none;">
+                                        <div class="form-group">
+                                            <label>คณะใหม่ที่ย้ายเข้าศึกษา</label>
+                                            <input type="text" id="inputNewFaculty" class="modern-input" placeholder="ระบุชื่อคณะ">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>สาขาวิชาใหม่ที่ย้ายเข้าศึกษา</label>
+                                            <input type="text" id="inputNewMajor" class="modern-input" placeholder="ระบุชื่อสาขาวิชา">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <button type="submit" class="btn btn-danger" style="width:100%; font-size:16px; padding:12px; border-radius:8px;">
+                                    ยืนยันการส่งข้อมูลการลาออก <i class="material-icons" style="vertical-align:middle;">send</i>
+                                </button>
+                            </form>
+                        </div>
+
+                        <div id="resignStep3" style="display:none; text-align:center; padding:40px;">
+                            <div style="width:80px; height:80px; background:#e8f5e9; color:#2e7d32; border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 20px auto;">
+                                <i class="material-icons" style="font-size:40px;">check_circle</i>
+                            </div>
+                            <h3 style="color:#2e7d32;">ระบบได้รับคำร้องของท่านเรียบร้อยแล้ว</h3>
+                            <p style="color:#666;">ข้อมูลการลาออกของท่านได้รับการบันทึกเข้าสู่ระบบแล้ว<br>ท่านไม่สามารถดำเนินการทำรายการซ้ำได้ หากพบข้อผิดพลาดกรุณาติดต่อเจ้าหน้าที่สถานศึกษา</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="userPetitionSection" class="section">
+                    <div class="card" style="border: none; box-shadow: 0 4px 20px rgba(0,0,0,0.08);">
+                        <div style="text-align: center; margin-bottom: 30px;">
+                            <div style="background: linear-gradient(135deg, #1565c0 0%, #42a5f5 100%); width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px auto; box-shadow: 0 4px 10px rgba(21, 101, 192, 0.3);">
+                                <i class="material-icons" style="color: white; font-size: 32px;">rate_review</i>
+                            </div>
+                            <h2 style="border: none; justify-content: center; margin-bottom: 5px; font-weight: 700; color: #333;">
+                                ระบบยื่นคำร้องออนไลน์ (กยศ.)
+                            </h2>
+                            <p style="color: #777; font-size: 15px; margin: 0;">รองรับการส่งคำร้องและติดตามผลการดำเนินงานผ่านระบบ</p>
+                        </div>
+
+                        <div style="background: #f8fafc; padding: 25px; border-radius: 12px; border: 1px solid #e2e8f0; max-width: 700px; margin: 0 auto;">
+                            <form id="petitionForm">
+                                <div class="form-row">
+                                    <div class="form-col">
+                                        <div class="form-group">
+                                            <label>รหัสนักศึกษา</label>
+                                            <input type="text" id="petStudentId" class="floating-input adm-input-readonly" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="form-col">
+                                        <div class="form-group">
+                                            <label>ชื่อ-นามสกุล</label>
+                                            <input type="text" id="petName" class="floating-input adm-input-readonly" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label style="color:#d32f2f; font-weight:bold;">ประเภทของคำร้อง <span style="color:red;">*</span></label>
+                                    <select id="petType" class="modern-input" style="font-weight:bold; color:#1976D2;" required>
+                                    <option value="">-- กรุณาเลือกประเภทของคำร้อง --</option>
+                                    <option value="1">1. ขอลงทะเบียนปรับปรุงข้อมูลประวัติ (ไม่อยู่ในช่วงระยะเวลาที่กำหนด)</option>
+                                    <option value="2">2. ขอประมวลผลเกรดเฉลี่ยเเละหน่วยกิตจิตอาสาเพิ่มเติม (กรณีรอบ 1 ไม่ผ่าน)</option>
+                                    <option value="3">3. ยื่นคำร้องเรื่องอื่นๆ ผ่านระบบ</option>
+                                    <option value="4">4. ขอลงทะเบียนเพิ่มชื่อกู้ยืม กรณีไม่พบชื่อ/ไม่ได้กู้ยืมต่อเนื่อง</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>ระบุเหตุผลความจำเป็นประกอบการยื่นคำร้อง <span style="color:red;">*</span></label>
+                                    <textarea id="petReason" class="modern-input" rows="4" placeholder="โปรดอธิบายเหตุผลและรายละเอียดความจำเป็นอย่างครบถ้วน..." required></textarea>
+                                </div>
+                                <div style="margin-top: 30px;">
+                                    <button type="submit" class="btn btn-primary" style="width: 100%; height: 50px; font-size: 16px; border-radius: 8px; box-shadow: 0 4px 15px rgba(25, 118, 210, 0.3);">
+                                        <i class="material-icons" style="margin-right: 8px;">send</i> ยืนยันการส่งคำร้อง
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="userTrackPetitionSection" class="section">
+                    <div class="card">
+                        <h2><i class="material-icons">assignment</i> ประวัติและสถานะคำร้องออนไลน์ กยศ.</h2>
+                        <p style="color: #666; margin-bottom: 20px;">ท่านสามารถตรวจสอบสถานะการดำเนินการและข้อความตอบกลับจากเจ้าหน้าที่ได้ที่นี่</p>
+                        
+                        <div class="table-container">
+                            <table class="clean-table" id="petitionStatusTable">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 15%;">วันที่ยื่นคำร้อง</th>
+                                        <th style="width: 12%;">เวลา</th> 
+                                        <th style="width: 20%;">ประเภทคำร้อง</th>
+                                        <th style="width: 23%;">สถานะการดำเนินการ</th>
+                                        <th style="width: 30%;">ความเห็น/หมายเหตุจากเจ้าหน้าที่</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td colspan="5" style="text-align:center; padding: 20px; color:#999;">กำลังดึงข้อมูลจากระบบ</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div> 
+
+            <footer class="app-footer">
+                <div class="footer-container">
+                    <div class="footer-col">
+                        <div class="logo-section">
+                            <div class="footer-logo"><img src="https://img1.pic.in.th/images/Ubu_logo.png" alt="Logo"></div>
+                            <div>
+                                <div class="org-name">กองทุนเงินให้กู้ยืมเพื่อการศึกษา<br>มหาวิทยาลัยอุบลราชธานี</div>
+                                <div class="org-address">เลขที่ 85 ถนนสถลมาร์ค ตำบลเมืองศรีไค อำเภอวารินชำราบ จังหวัดอุบลราชธานี 34190</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="footer-col">
+                        <div class="contact-list">
+                            <div style="font-weight:bold; margin-bottom:10px; color:#333;">ติดต่อสอบถามข้อมูล (กยศ.)</div>                  
+                            <div class="contact-item">
+                                <i class="material-icons">phone</i>
+                                <div><span class="contact-label">หมายเลขโทรศัพท์</span><a href="tel:045353093" class="contact-value">045-353-093 </a><span class="contact-sub">(วันจันทร์ - ศุกร์ 08:30 - 16:30 น.)</span></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="footer-col">
+                        <div class="contact-list">
+                            <div style="font-weight:bold; margin-bottom:10px; color:#333;"><i class="material-icons" style="font-size:18px; vertical-align:text-bottom;">integration_instructions</i> ติดต่อทีมพัฒนาระบบบริหารงาน กยศ.</div>                  
+                            <div class="contact-item">
+                                <i class="material-icons">support_agent</i>
+                                <div><span class="contact-label">หมายเลขโทรศัพท์ KPP</span><a href="tel:0624740508" class="contact-value" style="color: #d32f2f;">062-474-0508</a><span class="contact-sub">(วันจันทร์ - ศุกร์ 08:30 - 18:00 น.)</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+
+        </div> 
+    </div> 
+
+    <div id="activityHistoryModal" class="modal">
+        <div class="modal-content" style="max-width: 600px; padding: 20px;">
+            <span class="close-button" id="btnCloseActivityModal">×</span>
+            <h3 style="color: var(--secondary-color); margin-top: 0; border-bottom: 1px solid #eee; padding-bottom: 15px; font-size: 20px;">
+                <i class="material-icons" style="vertical-align: bottom;">history</i> ประวัติการลงทะเบียนกิจกรรม
+            </h3>
+            <div id="historyListContainer" class="history-list-wrapper"></div>
+        </div>
+    </div>
+
+    <div id="roundSelectionModal" class="modal">
+        <div class="modal-content" style="max-width: 600px;">
+            <span class="close-button" id="btnCloseRoundModal">×</span>
+            <h3 style="color: var(--secondary-color); border-bottom: 1px solid #ddd; padding-bottom: 10px;">
+                <i class="material-icons">schedule</i> เลือกรอบเวลาที่ประสงค์ลงทะเบียน
+            </h3>
+            <div id="roundModalTitle" style="font-weight: bold; margin-bottom: 15px; color: #555;"></div>
+            <div class="table-container">
+                <table class="clean-table">
+                    <thead>
+                        <tr>
+                            <th>ช่วงเวลาทำการ</th>
+                            <th>จำนวนโควตา (ผู้สมัคร/รับได้สูงสุด)</th>
+                            <th>สถานะการลงทะเบียน</th>
+                        </tr>
+                    </thead>
+                    <tbody id="roundListBody"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+<script src="user.js"></script>
+</body>
+</html>
